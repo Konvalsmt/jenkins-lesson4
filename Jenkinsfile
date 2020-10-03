@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        COMMIT_ID="""${sh(returnStdout: true, script: 'git rev-parse --short HEAD')}"""
+       
         app = ''
     }
     stages {
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', '${DOCKER_CREDS}') {
-                        app.push("${env.BUILD_ID}-${COMMIT_ID}")                
+                        app.push("${env.BUILD_ID} ")                
                     }
                 }
             }
