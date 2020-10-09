@@ -16,7 +16,7 @@ pipeline {
         stage('Test') {
             agent docker
             steps {
-                bash -c 'docker run -t ${IMAGE_NAME}:${IMAGE_TAG} '
+                bash -c "docker run -t ${IMAGE_NAME}:${IMAGE_TAG} "
             }
         }
         
