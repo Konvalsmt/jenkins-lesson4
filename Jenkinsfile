@@ -1,5 +1,5 @@
 pipeline {
-    agent Docker
+    agent any
     environment {
        
         app = ''
@@ -14,10 +14,17 @@ pipeline {
         }
         
         stage('Test') {
+            agent docker
             steps {
-                sh 'docker run -it ${IMAGE_NAME}:${IMAGE_TAG} '
+                bash -c 'docker run -t ${IMAGE_NAME}:${IMAGE_TAG} '
             }
         }
+        
+         stage("Run tests") {
+            steps {
+                bash -c "docker exec -t ${IMAGE_NAME}:${IMAGE_TAG} /bin/bash"
+                 }
+            }
         
         stage('Push') {
             steps {
