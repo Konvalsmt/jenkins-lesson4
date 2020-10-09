@@ -16,13 +16,16 @@ pipeline {
         stage('Test') {
             agent docker
             steps {
-                bash -c "docker run -t ${IMAGE_NAME}:${IMAGE_TAG} "
-                }
+                sh """
+                    docker run  \
+                        -p 3000:8080 ${IMAGE_NAME}:${IMAGE_TAG}
+                """
+            }
         }
         
          stage("Run tests") {
             steps {
-                bash -c "docker exec -t ${IMAGE_NAME}:${IMAGE_TAG} /bin/bash"
+                sh  "docker exec -t ${IMAGE_NAME}:${IMAGE_TAG} /bin/bash"
                  }
             }
         
