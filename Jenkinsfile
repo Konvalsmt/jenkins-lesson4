@@ -3,7 +3,7 @@ pipeline {
     environment {
        
         app = ''
-    }
+                 }
     stages {
         stage('Build') {
             steps {
@@ -17,7 +17,7 @@ pipeline {
             agent docker
             steps {
                 bash -c "docker run -t ${IMAGE_NAME}:${IMAGE_TAG} "
-            }
+                }
         }
         
          stage("Run tests") {
@@ -25,6 +25,7 @@ pipeline {
                 bash -c "docker exec -t ${IMAGE_NAME}:${IMAGE_TAG} /bin/bash"
                  }
             }
+        
         
         stage('Push') {
             steps {
@@ -34,7 +35,9 @@ pipeline {
                     }
                 }
             }
+        
         }
-    }
+        
+    
 
 }
