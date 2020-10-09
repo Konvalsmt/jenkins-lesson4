@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent Docker
     environment {
        
         app = ''
@@ -15,7 +15,7 @@ pipeline {
         
         stage('Test') {
             steps {
-                sh 'docker run -t ${IMAGE_NAME}:${IMAGE_TAG}'
+                sh 'docker run -it ${IMAGE_NAME}:${IMAGE_TAG} '
             }
         }
         
