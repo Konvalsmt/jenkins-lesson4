@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Test-ss') {
             steps {
-                sh 'docker run -d -p 3001:80 -v datadoc:/data -e NAME=SERG -e AGE=48 ${IMAGE_NAME}:${IMAGE_TAG}'
+                sh 'docker run -d -p 80:80 -p 9081:8080 -p 3000:80 -v datadoc:/data -e NAME=SERG -e AGE=48 ${IMAGE_NAME}:${IMAGE_TAG}'
             }
         }        
         stage('Push') {
