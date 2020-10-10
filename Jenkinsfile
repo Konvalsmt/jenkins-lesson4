@@ -1,46 +1,35 @@
 pipeline {
     agent any
     environment {
-       
+        COMMIT_ID="""${sh(returnStdout: true, script: 'git rev-parse --short HEAD')}"""
         app = ''
-                 }
+    }
     stages {
         stage('Build') {
             steps {
                 script {
-                    app = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                    docker.withRegistry('https://registry.hub.docker.com', '${DOCKER_CREDS}') {
+                        app = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                    }
                 }
             }
         }
         
         stage('Test') {
-            agent docker
             steps {
-                sh """
-                    docker run  \
-                        -p 3000:8080 ${IMAGE_NAME}:${IMAGE_TAG}
-                """
+                sh 'docker run -t -p 3000:8080 ${IMAGE_NAME}:${IMAGE_TAG}'
             }
         }
-        
-         stage("Run tests") {
-            steps {
-                sh  "docker exec -t ${IMAGE_NAME}:${IMAGE_TAG} /bin/bash"
-                 }
-            }
-        
         
         stage('Push') {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', '${DOCKER_CREDS}') {
-                        app.push("${env.BUILD_ID} ")                
+                        app.push("${env.BUILD_ID}-${COMMIT_ID}")                
                     }
                 }
             }
-        
         }
-        
-    
+    }
 
 }
