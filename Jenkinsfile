@@ -14,11 +14,17 @@ pipeline {
                 }
             }
         }
-        stage('Test-ss') {
+        stage('Test-start') {
             steps {
-                sh 'docker run -d -p 80:80 -p 9081:8080 -p 3000:80 -v datadoc:/data -e NAME=SERG -e AGE=48 ${IMAGE_NAME}:${IMAGE_TAG}'
+               RUN_ID="""${sh(returnStdout: true, script: 'docker run -d -p 80:80 -p 3000:80 -v datadoc:/data -e NAME=SERG -e AGE=48 ${IMAGE_NAME}:${IMAGE_TAG}')}"""   
             }
-        }        
+        }  
+        stage('Test-stop') {
+            steps {
+               sh ' docker stop $RUN_ID'   
+            }
+        }          
+        
         stage('Push') {
             steps {
                 script {
