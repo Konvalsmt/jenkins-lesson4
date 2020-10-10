@@ -15,12 +15,6 @@ pipeline {
             }
         }
         
-        stage('Test') {
-            steps {
-                sh 'docker run -t -p 3000:8080 ${IMAGE_NAME}:${IMAGE_TAG}'
-            }
-        }
-        
         stage('Push') {
             steps {
                 script {
