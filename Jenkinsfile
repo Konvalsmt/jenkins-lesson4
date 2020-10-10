@@ -21,7 +21,7 @@ pipeline {
         }  
         stage('Test-stop') {
             steps {
-               sh ' docker stop '   
+               sh ' docker stop $( docker ps -l -q) '   
             }
         }          
         
