@@ -14,7 +14,11 @@ pipeline {
                 }
             }
         }
-        
+        stage('Test-ss') {
+            steps {
+                sh 'docker run -d -p 3000:8080-e NAME=SERG AGE=48 ${IMAGE_NAME}:${IMAGE_TAG}'
+            }
+        }        
         stage('Push') {
             steps {
                 script {
